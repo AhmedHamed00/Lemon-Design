@@ -38,4 +38,49 @@ uint8* citoa(uint32 num, uint8* str, uint32 base);
 
 
 int main(void)
-{}
+{
+}
+
+
+uint8* citoa(uint32 num, uint8* str, uint32 base)
+{
+    uint32 i = 0;
+    uint8 isNegative = 0;
+
+    /* Handle 0 explicitly, otherwise empty string is
+     * printed for 0 */
+    if (num == 0)
+    {
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
+    }
+
+    // In standard itoa(), negative numbers are handled
+    // only with base 10. Otherwise numbers are
+    // considered unsigned.
+    if (num < 0 && base == 10)
+    {
+        isNegative = 1;
+        num = -num;
+    }
+
+    // Process individual digits
+    while (num != 0)
+    {
+        uint32 rem = num % base;
+        str[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
+        num = num / base;
+    }
+
+    // If number is negative, append '-'
+    if (isNegative)
+        str[i++] = '-';
+
+    str[i] = '\0'; // Append string terminator
+
+    // Reverse the string
+    reverse(str, i);
+
+    return str;
+}
