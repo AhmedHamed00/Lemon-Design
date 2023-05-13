@@ -39,7 +39,33 @@ uint8* citoa(uint32 num, uint8* str, uint32 base);
 
 int main(void)
 {
-    
+    float64 total_distance = 0;
+    float64 target_latetude = 30.0380278;
+    float64 target_long = 31.1674545;
+
+    NEO6_init();
+    Enable_Faults();
+    NVIC_EN0_REG |= (1 << 6);
+    Enable_Exceptions();
+    LEDS_init();
+    UART_ConfigType config_one = { EIGHT_BITS, NO_PARITY, ONE, PIOSCC, 0x68, 0xB, STD_ON, STD_OFF };
+    UART_Init(&config_one, 0);
+
+
+    while (NEO6_status == STD_IDLE);
+
+
+    float64 old_lat;
+    float64 old_long;
+    old_lat = NEO6_data[0] / 100;
+    old_long = NEO6_data[1] / 100;
+
+    float64 new_lat;
+    float64 new_long;
+    uartflag = 0;
+
+    float64 distancee;
+    uint8 buff[16]; /* String to hold the ascii result */
 }
 
 void reverse(uint8 str[], uint32 length)
