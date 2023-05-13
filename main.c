@@ -66,6 +66,46 @@ int main(void)
 
     float64 distancee;
     uint8 buff[16]; /* String to hold the ascii result */
+    while (1)
+    {
+
+        if (uartflag == 1 && NEO6_status == STD_ACTIVE)
+        {
+            uartflag = 0;
+            new_lat = NEO6_data[0] / 100;
+            new_long = NEO6_data[1] / 100;
+            distancee = NEO6_distance(old_lat, old_long, new_lat, new_long, 'K') * 1000;
+            if (distancee > 0.7)
+            {
+                total_distance += distancee;
+                old_lat = new_lat;
+                old_long = new_long;
+                citoa(total_distance, buff, 10);
+            }
+
+            citoa(total_distance, buff, 10);
+            UART_SendString("total dist\n\r", UART0_ID);
+            UART_SendString(buff, UART0_ID);
+            UART_SendString("\n\r", UART0_ID);
+            if ((NEO6_distance(target_latetude, target_long, new_lat, new_long, 'K') * 1000) < 5)
+            {
+                LEDS_ON(GREEN);
+                UART_SendString("Green Led ON \n\r", UART0_ID);
+            }
+            else if ((NEO6_distance(target_latetude, target_long, new_lat, new_long, 'K') * 1000) < 10)
+            {
+                LEDS_ON(YELLOW);
+                UART_SendString("Yellow Led ON \n\r", UART0_ID);
+            }
+            else
+            {
+                LEDS_ON(RED);
+                UART_SendString("Red Led ON \n\r", UART0_ID);
+            }
+
+        }
+
+    }
 }
 
 void reverse(uint8 str[], uint32 length)
