@@ -39,8 +39,22 @@ uint8* citoa(uint32 num, uint8* str, uint32 base);
 
 int main(void)
 {
+    
 }
 
+void reverse(uint8 str[], uint32 length)
+{
+    uint32 start = 0;
+    uint32 end = length - 1;
+    while (start < end)
+    {
+        uint8 temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        end--;
+        start++;
+    }
+}
 
 uint8* citoa(uint32 num, uint8* str, uint32 base)
 {
